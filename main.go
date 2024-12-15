@@ -2,35 +2,27 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"simple-blockchain/mypackage"
 )
 
-// Task: Create a simple Go web server that handles basic routes and displays messages.
-
 func main() {
-	// Set up the routes
-	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/hello", helloHandler)
-	http.HandleFunc("/about", aboutHandler)
+	// Initialize a new blockchain
+	blockchain := mypackage.InitializeBlockchain()
 
-	// Start the server on port 8080
-	fmt.Println("Starting server on http://localhost:8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Printf("Error starting server: %s\n", err)
+	// Add blocks to the blockchain
+	blockchain.AddBlock("Alice pays Bob 5 BTC")
+	blockchain.AddBlock("Bob pays Charlie 3 BTC")
+	blockchain.AddBlock("Charlie pays Dave 1 BTC")
+
+	// Display the blockchain
+	fmt.Println("Blockchain:")
+	for _, block := range blockchain.Blocks {
+		fmt.Printf("\nIndex: %d", block.Index)
+		fmt.Printf("\nTimestamp: %s", block.Timestamp)
+		fmt.Printf("\nData: %s", block.Data)
+		fmt.Printf("\nPrevious Hash: %s", block.PreviousHash)
+		fmt.Printf("\nHash: %s", block.Hash)
+		fmt.Printf("\nNonce: %d", block.Nonce)
+		fmt.Println("\n----------------------")
 	}
-}
-
-// Home route handler
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Welcome to the Go sample project!")
-}
-
-// Hello route handler
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, Go developer!")
-}
-
-// About route handler
-func aboutHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "This is a sample project to learn Go with a basic web server.")
 }
